@@ -13,6 +13,9 @@
         }
 
         public function dispatch(){
+            if(empty($_GET['url'])){
+                return redirect('/home');
+            }
             $path = '/' . trim($_GET['url'], '/');
             $method = $_SERVER['REQUEST_METHOD'];
 

@@ -1,5 +1,5 @@
 <?php
-    namespace Databases;
+    namespace App\Databases;
 
     class Database{
         private static $conn, $instance = [];
@@ -11,7 +11,7 @@
             $username = 'root';
             $password = '';
 
-            $dsn = "mysql:host=$host;dbname:$dbName;charset:$charset";
+            $dsn = "mysql:host=$host;dbname=$dbName;charset=$charset";
             $option = [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
