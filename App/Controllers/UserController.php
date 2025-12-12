@@ -55,8 +55,7 @@
             $_SESSION['user'] = $result;
 
             if(isset($_SESSION['user'])){
-                // return redirect('/library?message=Selamat Datang');
-                echo "berhasil login";die;
+                return redirect('/library?message=Selamat Datang');
             }else{
                 return redirect('/login?error=Gagal login. Coba lagi atau hubungi admin!');
             }

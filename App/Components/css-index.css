@@ -15,3 +15,14 @@
 .ct{
     text-align:center;
 }
+
+.br{
+    border:1px solid black;
+    border-collapse:collapse;
+    width: 100%
+}
+
+.br th, .br td{
+    border: 1px solid black;
+    padding: 10px
+}
