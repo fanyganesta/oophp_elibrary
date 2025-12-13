@@ -43,5 +43,24 @@
             return $this->run($sql, $datas)->fetchAll();
         }
 
-         
+        public function fileProcessing($datas){
+            $fileName = $datas['name'];
+            $tmp_name = $datas['tmp_name'];
+            $fileSize = $datas['size'];
+
+            $arrName = explode('.', $fileName);
+            $name = $arrName[0];
+            $ext = end($arrName);
+
+            if(strtolower($ext) != 'webp'){
+                return redirect('/library?error=File tidak diperbolehkan!');
+            }elseif($fileSize >= 100000){
+                return redirect('/library?error=Ukuran gambar terlalu besar');
+            }
+
+            $newName = time().'-'.uniqid($name).$ext;
+            move_uploaded_file($tmp_name, 'App/Components/img/'.$newName);
+
+            return $newName;
+        }
     }

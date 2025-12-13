@@ -18,6 +18,8 @@
 
     $route->get('/seeder-books',[new BooksSeeder, 'seeder']);
     $route->get('/library', [new BooksController, 'index']);
+    $route->get('/library-edit', [new BooksController, 'getEdit']);
+    $route->post('/library-edit', [new BooksController, 'edit']);
 
 
 

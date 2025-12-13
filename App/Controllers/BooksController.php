@@ -19,16 +19,52 @@
                 $halamanAktif = $_GET['halaman'];
             }
 
-            $all = "SELECT * FROM books";
-            $countAll = count(self::$db->getAll($all));
-
+            
             $index = $halamanAktif * $limit - $limit;
-            $sql = $all . " WHERE judul LIKE ? OR penerbit LIKE ? OR tahunTerbit LIKE ? OR rating LIKE ? LIMIT $index, $limit";
+            $all = "SELECT * FROM books WHERE judul LIKE ? OR penerbit LIKE ? OR tahunTerbit LIKE ? OR rating LIKE ?";
 
             $cari = (isset($_GET['cari'])) ? '%'.$_GET['cari'].'%' : '%%';
             $datas = [$cari, $cari, $cari, $cari];
+
+            $countAll = count(self::$db->getAll($all, $datas));
+
+            $jumlahHalaman = ceil($countAll/$limit);
+
+            $sql = $all . " LIMIT $index, $limit";
             $rows = self::$db->getAll($sql, $datas);
 
-            return view('Library/index', compact('rows'));
+            return view('Library/index', compact('rows', 'halamanAktif', 'jumlahHalaman'));
+        }
+
+        public function getEdit(){
+            $sql = "SELECT * FROM books WHERE ID = ?";
+            $ID = $_GET['ID'];
+            $datas = [$ID];
+            $row = self::$db->getOne($sql, $datas);
+            return view('Library/edit', compact('row'));
+        }
+
+        public function edit(){
+            $judul = $_POST['judul'];
+            $penerbit = $_POST['penerbit'];
+            $tahunTerbit = $_POST['tahunTerbit'];
+            $rating = $_POST['rating'];
+            $ID = $_POST['ID'];
+            if($_FILES['cover']['error'] == 4 && $_POST['oldImage'] == ''){
+                $foto = null;
+            } elseif($_FILES['cover']['error'] == 4){
+                $foto = $_POST['oldImage'];
+            }else{
+                $foto = self::$db->fileProcessing($_FILES['cover']);
+            }
+
+            $sql = "UPDATE books SET judul = ?, penerbit = ?, tahunTerbit = ?, rating = ?, foto = ? WHERE ID = ?";
+            $datas = [$judul, $penerbit, $tahunTerbit, $rating, $foto, $ID];
+            $result = self::$db->run($sql, $datas);
+            if($result){
+                return redirect("/library-edit?message=Data berhasil di-Update&ID=$ID");
+            }else{
+                return redirect("/library-edit?error=Gagal update data!&ID=$ID");
+            }
         }
     }
