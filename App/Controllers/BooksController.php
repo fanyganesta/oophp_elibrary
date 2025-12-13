@@ -67,4 +67,36 @@
                 return redirect("/library-edit?error=Gagal update data!&ID=$ID");
             }
         }
+
+        public function delete(){
+            $ID = $_GET['ID'];
+            $sql = "DELETE FROM books WHERE ID = ?";
+            $result = self::$db->run($sql, [$ID]);
+            if($result){
+                return redirect('/library?message=Data berhasil dihapus!');
+            }else{
+                return redirect('/lirary?error=Gagal menghapus data');
+            }
+        }
+
+        public function getTambah(){
+            return view('Library/tambah');
+        }
+
+        public function tambah(){
+            $judul = $_POST['judul'];
+            $penerbit = $_POST['penerbit'];
+            $tahunTerbit = $_POST['tahunTerbit'];
+            $rating = $_POST['rating'];
+            $foto = self::$db->fileProcessing($_FILES['cover']);
+
+            $sql = "INSERT INTO books (judul, penerbit, tahunTerbit, rating, foto) VALUES (?, ?, ?, ?, ?)";
+            $datas = [$judul, $penerbit, $tahunTerbit, $rating, $foto];
+            $return = self::$db->run($sql, $datas);
+            if($return){
+                return redirect('/library?message=Data berhasil ditambahkan!');
+            }else{
+                return redirect('/library?error=Gagal menambah data!');
+            }
+        }
     }

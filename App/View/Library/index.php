@@ -14,6 +14,8 @@
     <a href="<?=href('/user-list')?>">List Akun</a> |
     <a href="<?=href('/logout')?>">Keluar</a>
     </p>
+    <br>
+    <br>
 
     <form action="<?=href('/library')?>" method="GET">
         <label for="cari">Cari Buku: </label>
@@ -50,7 +52,7 @@
                 <td class="ct">
                     <p class="inline">
                         <a href="<?= href("/library-edit?ID={$row['ID']}")?>">Edit</a> |
-                        <a href="<?= href("/delete-book?ID={$row['ID']}")?>">Hapus</a>
+                        <a href="<?= href("/delete-book?ID={$row['ID']}")?>" onclick="return confirm('Yakin ingin menghapus data?')">Hapus</a>
                     </p>
                 </td>
             </tr>

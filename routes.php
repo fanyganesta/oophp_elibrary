@@ -20,6 +20,9 @@
     $route->get('/library', [new BooksController, 'index']);
     $route->get('/library-edit', [new BooksController, 'getEdit']);
     $route->post('/library-edit', [new BooksController, 'edit']);
+    $route->get('/delete-book', [new BooksController, 'delete']);
+    $route->get('/library-tambah', [new BooksController, 'getTambah']);
+    $route->post('/library-tambah', [new BooksController, 'tambah']);
 
 
 
