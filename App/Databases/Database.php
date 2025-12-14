@@ -58,7 +58,7 @@
                 return redirect('/library?error=Ukuran gambar terlalu besar');
             }
 
-            $newName = time().'-'.uniqid($name).$ext;
+            $newName = time().'-'.uniqid($name).'.'.$ext;
             move_uploaded_file($tmp_name, 'App/Components/img/'.$newName);
 
             return $newName;

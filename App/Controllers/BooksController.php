@@ -84,10 +84,10 @@
         }
 
         public function tambah(){
-            $judul = $_POST['judul'];
-            $penerbit = $_POST['penerbit'];
-            $tahunTerbit = $_POST['tahunTerbit'];
-            $rating = $_POST['rating'];
+            $judul = htmlspecialchars($_POST['judul']);
+            $penerbit = htmlspecialchars($_POST['penerbit']);
+            $tahunTerbit = htmlspecialchars($_POST['tahunTerbit']);
+            $rating = htmlspecialchars($_POST['rating']);
             $foto = self::$db->fileProcessing($_FILES['cover']);
 
             $sql = "INSERT INTO books (judul, penerbit, tahunTerbit, rating, foto) VALUES (?, ?, ?, ?, ?)";

@@ -12,7 +12,9 @@
         }
 
         public function index(){
-            
+            $sql = "SELECT * FROM users";
+            $rows = $this->conn->getAll($sql);
+            return view('Users/index', compact('rows'));
         }
 
         public function seeder(){
@@ -99,9 +101,26 @@
             $result = $this->conn->run($insert, $datas);
 
             if($result){
-                return redirect('/login?message=Berhasil mendaftar!');
+                session_start();
+                if(isset($_SESSION['user'])){
+                    return redirect('/user-list?message=User baru berhasil ditambah');
+                }
+                return redirect('/login?message=Berhasil mendaftar! Silahkan login');
             }else{
                 return redirect('/login?error=Gagal mendaftar, hubungi admin!');
+            }
+        }
+
+        public function delete(){
+            $ID = $_GET['ID'];
+            $sql = "DELETE FROM users WHERE ID = ?";
+            $data = [$ID];
+
+            $result = $this->conn->run($sql, $data);
+            if($result){
+                return redirect('/user-list?message=Data berhasil dihapus!');
+            }else{
+                return redirect('/user-list?error=Data gagal dihapus!');
             }
         }
     }

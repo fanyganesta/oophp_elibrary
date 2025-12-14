@@ -9,6 +9,10 @@
 <body>
     <?php require 'App/Components/feedback.php'?>
     <h3>Masukkan data</h3>
+    <?php if(CekLogin('admin')) : ?>
+        <a href="<?= href('/user-list')?>">Kembali ke list user</a>
+        <br><br>
+    <?php endif ?>
     <form action="<?= href('/register')?>" method="POST">
         <table>
             <tr>
