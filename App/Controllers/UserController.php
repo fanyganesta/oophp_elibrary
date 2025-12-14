@@ -12,9 +12,29 @@
         }
 
         public function index(){
-            $sql = "SELECT * FROM users";
-            $rows = $this->conn->getAll($sql);
-            return view('Users/index', compact('rows'));
+            $sql = "SELECT * FROM users WHERE username LIKE ? OR email LIKE ? OR role LIKE ?";
+
+            $cari = (isset($_GET['cari'])) ? '%' . $_GET['cari'] . '%' : '%%';
+            $datas = [$cari, $cari, $cari];
+
+            $all = $this->conn->getAll($sql, $datas);
+            $allData = count($all);
+
+            $limit = 5;
+            $jumlahHalaman = ceil($allData / $limit);
+
+            if(!isset($_GET['halaman']) || $_GET['halaman'] < 1){
+                $halamanAktif = 1;
+            }else{
+                $halamanAktif = $_GET['halaman'];
+            }
+
+            $index = $halamanAktif * $limit - $limit;
+            $withLimit = $sql." LIMIT $index, $limit";
+
+            $rows = $this->conn->getAll($withLimit, $datas);
+
+            return view('Users/index', compact('rows', 'jumlahHalaman', 'halamanAktif'));
         }
 
         public function seeder(){
@@ -121,6 +141,48 @@
                 return redirect('/user-list?message=Data berhasil dihapus!');
             }else{
                 return redirect('/user-list?error=Data gagal dihapus!');
+            }
+        }
+
+        public function getEdit(){
+            $ID = $_GET['ID'];
+            $sql = "SELECT * FROM users WHERE ID = ?";
+            $data = [$ID];
+
+            $row = $this->conn->getOne($sql, $data);
+            if($row){
+                return view('Users/edit', compact('row'));
+            }else{
+                return redirect('/user-list?error=Data tidak ditemukan');
+            }
+        }
+
+        public function edit(){
+            $ID = $_POST['ID'];
+            $oldPassword = $_POST['oldPassword'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $role = $_POST['role'];
+            $newPassword = (isset($_POST['newPassword']) ? $_POST['newPassword'] : null);
+            $confirmPassword = (isset($_POST['confirmPassword']) ? $_POST['confirmPassword'] : null);
+
+            if($newPassword != null){
+                if($newPassword != $confirmPassword){
+                    return redirect('/edit-user?error=Password baru dan Konfirmasi Password tidak sama');
+                }else{
+                    $password = password_hash($newPassword, PASSWORD_DEFAULT);
+                }
+            }else{
+                $password = $oldPassword;
+            }
+
+            $sql = "UPDATE users SET username = ?, email = ?, role = ?, password = ? WHERE ID = ?";
+            $datas = [$username, $email, $role, $password, $ID];
+            $result = $this->conn->run($sql, $datas);
+            if($result){
+                return redirect("/user-edit?ID={$ID}&message=Data berhasil diupdate!'");
+            }else{
+                return redirect("/user-edit?ID={$ID}&error=Gagal update user!");
             }
         }
     }

@@ -17,6 +17,8 @@
     $route->post('/register', [new UserController, 'register']);
     $route->get('/user-list', [new UserController, 'index']);
     $route->get('/user-delete', [new UserController, 'delete']);
+    $route->get('/user-edit', [new UserController, 'getEdit']);
+    $route->post('/user-edit', [new UserController, 'edit']);
 
     $route->get('/seeder-books',[new BooksSeeder, 'seeder']);
     $route->get('/library', [new BooksController, 'index']);

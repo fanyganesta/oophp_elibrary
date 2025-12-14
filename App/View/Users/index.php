@@ -36,6 +36,13 @@
                 </td>
             </tr>
         <?php $j++; endforeach ?>
+        <?php if($jumlahHalaman > 1) : ?>
+            <tr>
+                <td class="ct" colspan="5">
+                    <?php include 'App/Components/pagination.php'?>
+                </td>
+            </tr>
+        <?php endif ?>
     </table>
 </body>
 </html>

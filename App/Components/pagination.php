@@ -3,7 +3,7 @@
         <?php if($j == $halamanAktif) : ?>
             <p class="inline-bold"><?= $j ?></p>
         <?php else : ?>
-            <a href="<?= href("/library?halaman=$j")?><?php if(isset($_GET['cari'])){echo '&cari=' . $_GET['cari'];}?>"><?=$j?></a>
+            <a href="?halaman=<?=$j?><?php if(isset($_GET['cari'])){echo '&cari=' . $_GET['cari'];}?>"><?=$j?></a>
         <?php endif ?>
     <?php endfor ?>
 <?php endif ?>
