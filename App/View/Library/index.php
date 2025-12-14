@@ -10,8 +10,10 @@
     <?php include 'App/Components/feedback.php'?>
     <h3> List Buku-Buku</h3>
     <p class="inline">
-    <a href="<?=href('/library-tambah')?>">Tambah Buku</a> |
-    <a href="<?=href('/user-list')?>">List Akun</a> |
+    <?php if(CekLogin('admin')) : ?>
+        <a href="<?=href('/library-tambah')?>">Tambah Buku</a> |
+        <a href="<?=href('/user-list')?>">List Akun</a> |
+    <?php endif ?>
     <a href="<?=href('/logout')?>">Keluar</a>
     </p>
     <br>
@@ -33,7 +35,9 @@
             <th>Penerbit</th>
             <th>Tahun Terbit</th>
             <th>Rating</th>
-            <th>Action</th>
+            <?php if(CekLogin('admin')) : ?>
+                <th>Action</th>
+            <?php endif ?>
         </tr>
         <?php $i=1; foreach($rows as $row) : ?>
             <tr>
@@ -49,12 +53,14 @@
                 <td > <?=$row['penerbit']?></td>
                 <td class="ct"><?=$row['tahunTerbit']?></td>
                 <td class="ct"><?=$row['rating']?></td>
-                <td class="ct">
-                    <p class="inline">
-                        <a href="<?= href("/library-edit?ID={$row['ID']}")?>">Edit</a> |
-                        <a href="<?= href("/delete-book?ID={$row['ID']}")?>" onclick="return confirm('Yakin ingin menghapus data?')">Hapus</a>
-                    </p>
-                </td>
+                <?php if(CekLogin('admin')) : ?>
+                    <td class="ct">
+                        <p class="inline">
+                            <a href="<?= href("/library-edit?ID={$row['ID']}")?>">Edit</a> |
+                            <a href="<?= href("/delete-book?ID={$row['ID']}")?>" onclick="return confirm('Yakin ingin menghapus data?')">Hapus</a>
+                        </p>
+                    </td>
+                <?php endif ?>
             </tr>
         <?php $i++; endforeach ?>
             <?php if($jumlahHalaman > 1) : ?>

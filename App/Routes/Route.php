@@ -24,7 +24,7 @@
                 if($path == $route){
 
                     foreach($datas['middleware'] as $mw){
-                        $class = 'Middleware\\' . ucfirst($mw) . 'Middleware';
+                        $class = 'App\Middleware\\' . ucfirst($mw) . 'Middleware';
                         $class::handling();
                     }
                     return call_user_func($datas['callback']);

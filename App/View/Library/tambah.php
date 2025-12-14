@@ -9,6 +9,8 @@
 <body>
     <?php include 'App/Components/feedback.php'?>
     <h3>Masukkan data buku baru</h3>
+    <a href="<?= href('/library')?>">Kembali ke list buku</a>
+    <br><br>
     <form method="POST" action="<?= href('/library-tambah')?>" enctype="multipart/form-data">
         <table>
             <tr>
